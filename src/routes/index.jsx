@@ -6,8 +6,7 @@ import Dashboard from "../pages/Dashboard";
 // Lazy load components for better performance
 const ManLayout = lazy(() => import("../layouts/man"));
 const Products = lazy(() => import("../pages/Products"));
-
-const PATH_AFTER_LOGIN = "/dashboard";
+const Login = lazy(() => import("../pages/Login"));
 
 const router = createBrowserRouter([
   {
@@ -36,6 +35,10 @@ const router = createBrowserRouter([
       },
     ],
     errorElement: <ErrorPage />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
   },
 ]);
 

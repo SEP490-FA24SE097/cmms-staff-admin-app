@@ -7,7 +7,7 @@ import {
 } from "react-icons/ai";
 import { IoMdArrowDown } from "react-icons/io";
 import { MdArrowDropDown } from "react-icons/md";
-import AddProductPopup from "../components/AddProductPopup";
+import AddProductPopup from "../components/modals/AddProductPopup";
 
 const Sidebar = () => {
   return (

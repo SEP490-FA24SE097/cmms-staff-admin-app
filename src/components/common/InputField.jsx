@@ -10,14 +10,16 @@ const InputField = ({
   tooltipContent,
 }) => (
   <div className="flex items-center">
-    <label
-      htmlFor={id}
-      className="block text-gray-700 text-sm font-medium w-20"
-    >
-      {label}
-    </label>
-    <TooltipIcon tooltipId={tooltipId} tooltipContent={tooltipContent} />
-    <Tooltip id={tooltipId} variant="info" />
+    <div className="flex items-center">
+      <label
+        htmlFor={id}
+        className="block text-gray-700 text-sm font-medium w-32"
+      >
+        {label}
+      </label>
+      <TooltipIcon tooltipId={tooltipId} tooltipContent={tooltipContent} />
+      <Tooltip id={tooltipId} variant="info" />
+    </div>
     <input
       type={type}
       id={id}

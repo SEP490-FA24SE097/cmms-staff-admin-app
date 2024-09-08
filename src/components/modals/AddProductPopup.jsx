@@ -8,12 +8,12 @@ import {
   AiOutlineCloseCircle,
   AiOutlinePlus,
 } from "react-icons/ai";
-import defaultProductImg from "../assets/default-product-img.jpg";
+import defaultProductImg from "../../assets/default-product-img.jpg";
 import { FaPlus } from "react-icons/fa6";
-import Button from "./common/Button";
-import InputField from "./common/InputField";
-import SelectField from "./common/SelectField";
-import TooltipIcon from "./common/TooltipIcon";
+import Button from "../common/Button";
+import InputField from "../common/InputField";
+import SelectField from "../common/SelectField";
+import TooltipIcon from "../common/TooltipIcon";
 
 const AddProductPopup = ({ isOpen, onClose }) => {
   const [isProperty, setIsProperty] = useState(false);
@@ -67,7 +67,7 @@ const AddProductPopup = ({ isOpen, onClose }) => {
     <div className="absolute -top-56 right-1/2  flex items-center justify-center z-50 w-[960px]">
       <div className="bg-gray-800 bg-opacity-75 fixed inset-0"></div>
       <div className=" bg-white rounded-lg shadow-lg mt-32 relative ">
-        <div className="bg-gray-200 rounded-t-lg">
+        <div className="bg-gray-200 rounded-t-lg ">
           <div className="flex">
             <h2 className="text-lg font-semibold m-6">Thêm hàng</h2>
             <button
@@ -79,9 +79,9 @@ const AddProductPopup = ({ isOpen, onClose }) => {
           </div>
 
           {/* Tabs */}
-          <div className="border-b-2 border-gray-200 mb-4">
+          <div className="border-b-2 border-gray-300 mb-4">
             <ul className="flex space-x-2 text-gray-600">
-              <li className="px-6 border-b-4 border-green-500 pb-2">
+              <li className="px-6 border-b-2 border-green-500 pb-2">
                 Thông tin
               </li>
               <li className="px-6 hover:text-gray-800 cursor-pointer">
@@ -289,142 +289,144 @@ const AddProductPopup = ({ isOpen, onClose }) => {
             )}
           </div>
         </div>
-        <div className="p-6 ">
+        <div className="p-6">
           <div className="border rounded-lg">
-            <div
-              className="flex items-center justify-between bg-gray-100 px-4 py-2"
-              onClick={toggleUnit}
-            >
-              <span>Đơn vị tính</span>
-              {isUnit ? (
-                <AiOutlineDown className="w-4 h-4" />
-              ) : (
-                <AiOutlineDown className="w-4 h-4 rotate-180" />
-              )}
-            </div>
-          </div>
-
-          {isUnit && (
-            <div className="shadow">
-              <div className="p-4 ">
-                <div className="flex items-center ">
-                  <h4 className="text-gray-700 text-sm font-medium ">
-                    Đơn vị cơ bản
-                  </h4>
-                  <TooltipIcon
-                    tooltipId="don-vi-co-ban"
-                    tooltipContent="Đơn vị của hàng hóa như: hộp lốc thùng..."
-                    className="text-xl ml-1 text-gray-400 cursor-pointer"
-                  />
-                  <Tooltip id="don-vi-co-ban" variant="info" />
-                </div>
-                <input
-                  type="text"
-                  className="outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 "
-                />
+            <div>
+              <div
+                className="flex items-center justify-between bg-gray-100 px-4 py-2"
+                onClick={toggleUnit}
+              >
+                <span>Đơn vị tính</span>
+                {isUnit ? (
+                  <AiOutlineDown className="w-4 h-4" />
+                ) : (
+                  <AiOutlineDown className="w-4 h-4 rotate-180" />
+                )}
               </div>
-              <div>
-                {units.map((unit) => (
-                  <div key={unit.id}>
-                    <div className="flex items-center space-x-10 justify-between p-4">
-                      <div className="flex items-center space-x-4">
-                        <div className="flex flex-col">
-                          <label
-                            htmlFor="ten-don-vi"
-                            className="text-sm font-medium"
-                          >
-                            Tên đơn vị
-                          </label>
-                          <input
-                            id="ten-don-vi"
-                            type="text"
-                            className="w-24 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm"
+            </div>
+
+            {isUnit && (
+              <div className=" pb-4">
+                <div className="p-4 ">
+                  <div className="flex items-center ">
+                    <h4 className="text-gray-700 text-sm font-medium ">
+                      Đơn vị cơ bản
+                    </h4>
+                    <TooltipIcon
+                      tooltipId="don-vi-co-ban"
+                      tooltipContent="Đơn vị của hàng hóa như: hộp lốc thùng..."
+                      className="text-xl ml-1 text-gray-400 cursor-pointer"
+                    />
+                    <Tooltip id="don-vi-co-ban" variant="info" />
+                  </div>
+                  <input
+                    type="text"
+                    className="outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 "
+                  />
+                </div>
+                <div>
+                  {units.map((unit) => (
+                    <div key={unit.id}>
+                      <div className="flex items-center space-x-10 justify-between p-4">
+                        <div className="flex items-center space-x-4">
+                          <div className="flex flex-col">
+                            <label
+                              htmlFor="ten-don-vi"
+                              className="text-sm font-medium"
+                            >
+                              Tên đơn vị
+                            </label>
+                            <input
+                              id="ten-don-vi"
+                              type="text"
+                              className="w-24 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <label
+                              htmlFor="gia-tri-quy-doi"
+                              className="text-sm font-medium"
+                            >
+                              Giá trị quy đổi
+                            </label>
+                            <input
+                              id="gia-tri-quy-doi"
+                              type="number"
+                              className="w-24 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <label
+                              htmlFor="gia-ban"
+                              className="text-sm font-medium"
+                            >
+                              Giá bán
+                            </label>
+                            <input
+                              id="gia-ban"
+                              type="number"
+                              className="w-16 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <label
+                              htmlFor="ma-hang"
+                              className="text-sm font-medium"
+                            >
+                              Mã hàng
+                            </label>
+                            <input
+                              id="ma-hang"
+                              type="text"
+                              placeholder="Mã hàng tự động"
+                              className="w-32 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm text-gray-400"
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <label
+                              htmlFor="ma-vach"
+                              className="text-sm font-medium"
+                            >
+                              Mã vạch
+                            </label>
+                            <input
+                              id="ma-vach"
+                              type="text"
+                              className="w-32 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm"
+                            />
+                          </div>
+                          <div className="flex items-center">
+                            <input
+                              type="checkbox"
+                              id="ban-truc-tiep"
+                              className="w-4 h-4 text-green-500 focus:ring-0"
+                            />
+                            <label
+                              htmlFor="ban-truc-tiep"
+                              className="ml-2 text-sm"
+                            >
+                              Bán trực tiếp
+                            </label>
+                          </div>
+                          <AiOutlineDelete
+                            className="w-5 h-5 cursor-pointer text-red-500"
+                            onClick={() => removeUnit(unit.id)}
                           />
                         </div>
-                        <div className="flex flex-col">
-                          <label
-                            htmlFor="gia-tri-quy-doi"
-                            className="text-sm font-medium"
-                          >
-                            Giá trị quy đổi
-                          </label>
-                          <input
-                            id="gia-tri-quy-doi"
-                            type="number"
-                            className="w-24 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <label
-                            htmlFor="gia-ban"
-                            className="text-sm font-medium"
-                          >
-                            Giá bán
-                          </label>
-                          <input
-                            id="gia-ban"
-                            type="number"
-                            className="w-16 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <label
-                            htmlFor="ma-hang"
-                            className="text-sm font-medium"
-                          >
-                            Mã hàng
-                          </label>
-                          <input
-                            id="ma-hang"
-                            type="text"
-                            placeholder="Mã hàng tự động"
-                            className="w-32 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm text-gray-400"
-                          />
-                        </div>
-                        <div className="flex flex-col">
-                          <label
-                            htmlFor="ma-vach"
-                            className="text-sm font-medium"
-                          >
-                            Mã vạch
-                          </label>
-                          <input
-                            id="ma-vach"
-                            type="text"
-                            className="w-32 outline-none border-b border-gray-300 focus:border-green-500 px-2 py-1 text-sm"
-                          />
-                        </div>
-                        <div className="flex items-center">
-                          <input
-                            type="checkbox"
-                            id="ban-truc-tiep"
-                            className="w-4 h-4 text-green-500 focus:ring-0"
-                          />
-                          <label
-                            htmlFor="ban-truc-tiep"
-                            className="ml-2 text-sm"
-                          >
-                            Bán trực tiếp
-                          </label>
-                        </div>
-                        <AiOutlineDelete
-                          className="w-5 h-5 cursor-pointer text-red-500"
-                          onClick={() => removeUnit(unit.id)}
-                        />
                       </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
+                <button
+                  className="flex items-center px-4 py-2 ml-4  rounded-lg bg-gray-100"
+                  onClick={addUnit}
+                >
+                  <FaPlus className="w-4 h-4 mr-2" />
+                  Thêm đơn vị
+                </button>
               </div>
-              <button
-                className="flex items-center px-4 py-2 ml-4 rounded-lg bg-gray-100"
-                onClick={addUnit}
-              >
-                <FaPlus className="w-4 h-4 mr-2" />
-                Thêm đơn vị
-              </button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
 
         {/* Action Buttons */}

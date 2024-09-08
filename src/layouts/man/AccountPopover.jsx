@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { Link } from "react-router-dom";
 import { FaUserCircle, FaRegUserCircle } from "react-icons/fa";
 import { AiOutlineLogout } from "react-icons/ai";
-
+import AccountPopup from "../../components/modals/AccountPopup";
 // AccountIcon Component
 const AccountIcon = () => (
   <div className="flex items-center space-x-1 cursor-pointer">
@@ -27,19 +27,42 @@ const PopoverItem = ({ to, Icon, label }) => (
 );
 
 // Popover Component
-const Popover = ({ isOpen, handleMouseEnter, handleMouseLeave }) =>
-  isOpen && (
-    <div
-      className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg"
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div className="py-2">
-        <PopoverItem to="#" Icon={FaRegUserCircle} label="Tài khoản" />
-        <PopoverItem to="#" Icon={AiOutlineLogout} label="Đăng xuất" />
-      </div>
-    </div>
+const Popover = ({ isOpen, handleMouseEnter, handleMouseLeave }) => {
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const handleAccountClick = () => {
+    setIsPopupOpen(true);
+  };
+
+  const handleLogoutClick = () => {
+    setIsPopupOpen(false);
+  };
+
+  return (
+    <>
+      {isOpen && !isPopupOpen && (
+        <div
+          className="absolute right-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg"
+          onMouseEnter={handleMouseEnter}
+          onMouseLeave={handleMouseLeave}
+        >
+          <div className="py-2">
+            <div
+              className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              onClick={handleAccountClick}
+            >
+              <div className="flex items-center">
+                <FaRegUserCircle className="w-5 h-5 mr-2 text-gray-500 " />
+                <span>Tài khoản</span>
+              </div>
+            </div>
+            <PopoverItem to="#" Icon={AiOutlineLogout} label="Đăng xuất" />
+          </div>
+        </div>
+      )}
+      <AccountPopup isOpen={isPopupOpen} onClose={handleLogoutClick} />
+    </>
   );
+};
 
 const AccountPopover = () => {
   const [isOpen, setIsOpen] = useState(false);
