@@ -11,9 +11,9 @@ import {
 import defaultProductImg from "../../assets/default-product-img.jpg";
 import { FaPlus } from "react-icons/fa6";
 import Button from "../common/Button";
-import InputField from "../common/InputField";
 import SelectField from "../common/SelectField";
 import TooltipIcon from "../common/TooltipIcon";
+import InputField from "../common/InputField";
 
 const AddProductPopup = ({ isOpen, onClose }) => {
   const [isProperty, setIsProperty] = useState(false);

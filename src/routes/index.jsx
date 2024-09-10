@@ -7,6 +7,7 @@ import Dashboard from "../pages/Dashboard";
 const ManLayout = lazy(() => import("../layouts/man"));
 const Products = lazy(() => import("../pages/Products"));
 const Login = lazy(() => import("../pages/Login"));
+const Users = lazy(() => import("../pages/Users"));
 
 const router = createBrowserRouter([
   {
@@ -19,7 +20,6 @@ const router = createBrowserRouter([
           </div>
         }
       >
-        {" "}
         {/* Show a loading indicator while components load */}
         <ManLayout />
       </Suspense>
@@ -32,6 +32,10 @@ const router = createBrowserRouter([
       {
         path: "/products",
         element: <Products />,
+      },
+      {
+        path: "/users",
+        element: <Users />,
       },
     ],
     errorElement: <ErrorPage />,

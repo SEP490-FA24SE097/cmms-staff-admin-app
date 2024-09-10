@@ -26,7 +26,7 @@ const Popover = ({ isOpen, handleMouseEnter, handleMouseLeave }) =>
     >
       <div className="py-2">
         <SettingPopoverItem
-          to="#"
+          to="/users"
           Icon={MdOutlineManageAccounts}
           label="Quản lí người dùng"
         />

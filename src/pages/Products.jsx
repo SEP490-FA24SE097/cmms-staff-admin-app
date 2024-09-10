@@ -1,13 +1,12 @@
 import React, { useState, useRef } from "react";
 import {
-  AiOutlineSearch,
   AiOutlinePlus,
   AiOutlineUpload,
   AiOutlineFileExcel,
 } from "react-icons/ai";
-import { IoMdArrowDown } from "react-icons/io";
 import { MdArrowDropDown } from "react-icons/md";
 import AddProductPopup from "../components/modals/AddProductPopup";
+import SearchBar from "../components/SearchBar";
 
 const Sidebar = () => {
   return (
@@ -104,23 +103,6 @@ const Sidebar = () => {
   );
 };
 
-const SearchBar = () => {
-  return (
-    <div className="flex-1 ">
-      {/* Search Bar */}
-      <div className="flex items-center border rounded-lg px-3 py-2 w-full max-w-lg bg-white shadow-md">
-        <AiOutlineSearch className="" />
-        <input
-          type="text"
-          placeholder="Theo mã, tên hàng"
-          className="px-3 py-2 outline-none text-gray-700 w-full"
-        />
-        <IoMdArrowDown className="text-gray-400" />
-      </div>
-    </div>
-  );
-};
-
 const PopverAddProduct = ({ isOpen, handleMouseEnter, handleMouseLeave }) => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
 
@@ -214,9 +196,9 @@ const Products = () => {
   return (
     <div className="flex">
       <Sidebar />
-      <div className="flex-1">
+      <div className="flex-1 space-y-6">
         <div className="flex justify-between items-center">
-          <SearchBar />
+          <SearchBar planceholder={"Theo mã, tên hàng"} />
           <ButtonGroup />
         </div>
         {/* Product Table */}
