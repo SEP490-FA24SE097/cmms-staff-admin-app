@@ -25,7 +25,7 @@ jobs:
 
       # Check if the 'dist' directory exists after build
       - name: List build directory contents
-        run: ls -al ./dist
+        run: ls -al 
     
 
       - name: Upload build artifact for deployment job
