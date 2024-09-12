@@ -23,6 +23,11 @@ jobs:
           npm install
           npm run build
 
+      # Check if the 'dist' directory exists after build
+      - name: List build directory contents
+        run: ls -al ./dist
+    
+
       - name: Upload build artifact for deployment job
         uses: actions/upload-artifact@v4
         with:
