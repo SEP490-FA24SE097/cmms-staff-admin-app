@@ -63,3 +63,4 @@ jobs:
           app-name: 'cmms-staff-admin-app'
           slot-name: 'Production'
           package: '.'
+          run: npm run dev
