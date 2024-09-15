@@ -1,12 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import "react-phone-input-2/lib/style.css";
+import { useForm, Controller } from "react-hook-form";
+
+import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
+import axios from "../../utils/axios";
+import PhoneInput from "react-phone-input-2";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import "react-datepicker/dist/react-datepicker.css";
+import { AiOutlineSave, AiOutlineCloseCircle } from "react-icons/ai";
 import InputField from "../common/InputField";
 import Button from "../common/Button";
-import { AiOutlineSave, AiOutlineCloseCircle } from "react-icons/ai";
 import RegionSelect from "../common/RegionSelect";
 import useRegionData from "../../hooks/useRegionData";
+import SelectField from "../common/SelectField";
 
-const PasswordInputField = ({ id, label, required }) => {
+const schema = yup.object().shape({
+  name: yup.string().required("Tên người dùng là bắt buộc"),
+
+  email: yup.string().email("Email không hợp lệ").required("Email là bắt buộc"),
+
+  password: yup
+    .string()
+    .min(6, "Mật khẩu phải có ít nhất 6 ký tự")
+    .required("Mật khẩu là bắt buộc"),
+
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), null], "Mật khẩu không khớp")
+    .required("Nhập lại mật khẩu là bắt buộc"),
+});
+
+const PasswordInputField = ({ id, label, required, value, onChange }) => {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const togglePasswordVisibility = () => {
@@ -19,12 +44,16 @@ const PasswordInputField = ({ id, label, required }) => {
         id={id}
         label={label}
         type={passwordVisible ? "text" : "password"}
+        autoComplete="new-password"
         required={required}
+        value={value}
+        onChange={onChange}
       />
       <button
         type="button"
         onClick={togglePasswordVisibility}
-        className="absolute inset-y-0 right-3 flex items-center text-gray-500 hover:text-gray-700"
+        className="absolute inset-y-0 right-1 flex items-center text-gray-500 hover:text-gray-700"
+        aria-label="Toggle password visibility"
       >
         {passwordVisible ? <AiOutlineEye /> : <AiOutlineEyeInvisible />}
       </button>
@@ -35,26 +64,49 @@ const PasswordInputField = ({ id, label, required }) => {
 const AddUserPopup = ({ isOpen, onClose }) => {
   const { provinces, districts, wards, fetchDistricts, fetchWards } =
     useRegionData();
+  const [roles, setRoles] = useState([]);
+  const [stores, setStores] = useState([]);
 
-  const [selectedProvince, setSelectedProvince] = useState("");
-  const [selectedDistrict, setSelectedDistrict] = useState("");
-  const [selectedWard, setSelectedWard] = useState("");
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
 
-  const handleProvinceChange = (e) => {
-    const provinceCode = e.target.value;
-    console.log("provinceCode", provinceCode);
-    setSelectedProvince(provinceCode);
-    fetchDistricts(provinceCode);
-  };
+  useEffect(() => {
+    const fectchRoles = async () => {
+      try {
+        const response = await axios.get("/roles");
+        setRoles(response.data.data);
+        console.log(response.data.data);
+      } catch {
+        console.log("Error fetching roles", errors);
+      }
+    };
+    const fectchStore = async () => {
+      try {
+        const response = await axios.get("/stores");
+        setStores(response.data.data);
+        console.log(response.data.data);
+      } catch {
+        console.log("Error fetching stores", errors);
+      }
+    };
+    fectchRoles();
+    fectchStore();
+  }, []);
 
-  const handleDistrictChange = (e) => {
-    const districtCode = e.target.value;
-    setSelectedDistrict(districtCode);
-    fetchWards(districtCode);
-  };
-
-  const handleWardChange = (e) => {
-    setSelectedWard(e.target.value);
+  const onSubmit = async (data) => {
+    try {
+      await axios.post("/users", data);
+      alert("Thêm người dùng thành công");
+      onClose();
+    } catch (error) {
+      alert("Có lỗi xảy ra, vui lòng thử lại.");
+    }
   };
 
   if (!isOpen) return null;
@@ -65,7 +117,7 @@ const AddUserPopup = ({ isOpen, onClose }) => {
       aria-modal="true"
       role="dialog"
     >
-      <div className="bg-white relative rounded-lg shadow-lg w-full max-w-4xl mx-4 mb-36">
+      <div className="bg-white relative rounded-lg shadow-lg w-full max-w-4xl mx-4">
         <div className="m-6">
           <p className="text-lg font-semibold mb-4">Người dùng</p>
           <button
@@ -77,58 +129,237 @@ const AddUserPopup = ({ isOpen, onClose }) => {
           </button>
         </div>
         <div className="container mx-auto p-6">
-          <form className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="grid grid-cols-1 md:grid-cols-2 gap-4"
+          >
             {/* Left Column */}
             <div className="space-y-4">
-              <InputField id="name" label="Tên người dùng" required />
-              <InputField
-                id="email"
-                label="Email đăng nhập"
-                type="email"
-                required
+              <Controller
+                name="name"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <InputField {...field} id="name" label="Tên người dùng" />
+                )}
               />
-              <PasswordInputField id="password" label="Mật khẩu" required />
-              <PasswordInputField
-                id="confirm-password"
-                label="Nhập lại mật khẩu"
-                required
+              {errors.name && (
+                <p className="text-red-500">{errors.name.message}</p>
+              )}
+              <Controller
+                name="email"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <InputField
+                    {...field}
+                    id="email"
+                    label="Email đăng nhập"
+                    autoComplete="Email đăng nhập "
+                  />
+                )}
               />
-              <InputField id="store" label="Cửa hàng" />
-              <InputField id="role" label="Vai trò" value="Admin" readOnly />
+              {errors.email && (
+                <p className="text-red-500">{errors.email.message}</p>
+              )}
+              <Controller
+                name="password"
+                control={control}
+                render={({ field }) => (
+                  <PasswordInputField
+                    onChange={field.onChange}
+                    value={field.value}
+                    id="password"
+                    label="Mật khẩu"
+                  />
+                )}
+              />
+              {errors.password && (
+                <p className="text-red-500">{errors.password.message}</p>
+              )}
+              <Controller
+                name="confirmPassword"
+                control={control}
+                render={({ field }) => (
+                  <PasswordInputField
+                    onChange={field.onChange}
+                    value={field.value}
+                    id="confirmPassword"
+                    label="Nhập lại mật khẩu"
+                  />
+                )}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500">{errors.confirmPassword.message}</p>
+              )}
+              <Controller
+                name="store"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <SelectField
+                    id="store"
+                    label="Cửa hàng"
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={stores}
+                  />
+                )}
+              />
+              {errors.store && (
+                <p className="text-red-500">{errors.store.message}</p>
+              )}
+
+              <Controller
+                name="role"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <SelectField
+                    id="role"
+                    label="Vai trò"
+                    value={field.value}
+                    onChange={field.onChange}
+                    options={roles}
+                  />
+                )}
+              />
+              {errors.role && (
+                <p className="text-red-500">{errors.role.message}</p>
+              )}
+
+              <div className="flex items-center">
+                <label className="w-1/3 text-gray-700 text-sm font-medium">
+                  Điện thoại
+                </label>
+                <Controller
+                  name="phone"
+                  control={control}
+                  defaultValue=""
+                  render={({ field }) => (
+                    <PhoneInput
+                      country={"vn"} // Quốc kỳ mặc định là Việt Nam
+                      value={field.value} // Kết nối value với field của React Hook Form
+                      onChange={field.onChange} // Kết nối onChange với field
+                      inputClass="border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full"
+                      inputStyle={{
+                        width: "100%",
+                        border: "none",
+                        borderBottom: "1px solid #d1d5db",
+                        borderRadius: "0",
+                      }}
+                      buttonStyle={{
+                        border: "none",
+                        borderBottom: "1px solid #d1d5db",
+                        borderRadius: "0",
+                      }}
+                      inputProps={{
+                        onFocus: (e) =>
+                          (e.target.style.borderBottom = "1px solid #22c55e"), // Màu xanh khi focus
+                        onBlur: (e) =>
+                          (e.target.style.borderBottom = "1px solid #d1d5db"), // Quay lại màu xám khi mất focus
+                      }}
+                    />
+                  )}
+                />
+                {errors.phone && (
+                  <p className="text-red-500">{errors.phone.message}</p>
+                )}
+              </div>
             </div>
 
             {/* Right Column */}
+
             <div className="space-y-4">
-              <InputField id="birthday" label="Ngày sinh" type="date" />
-              <RegionSelect
-                label="Tỉnh/TP"
-                options={provinces}
-                value={selectedProvince}
-                onChange={handleProvinceChange}
+              <Controller
+                name="birthday"
+                control={control}
+                render={({ field }) => (
+                  <InputField
+                    {...field}
+                    id="birthday"
+                    label="Ngày sinh"
+                    type="date"
+                  />
+                )}
               />
-              <RegionSelect
-                label="Quận/Huyện"
-                options={districts}
-                value={selectedDistrict}
-                onChange={handleDistrictChange}
+              {errors.birthday && (
+                <p className="text-red-500">{errors.birthday.message}</p>
+              )}
+              <Controller
+                name="province"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <RegionSelect
+                    label="Tỉnh/TP"
+                    value={field.value}
+                    options={provinces}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      fetchDistricts(e.target.value);
+                    }}
+                  />
+                )}
               />
-              <RegionSelect
-                label="Phường/Xã"
-                options={wards}
-                value={selectedWard}
-                onChange={(e) => setSelectedWard(e.target.value)}
+              {errors.province && (
+                <p className="text-red-500">{errors.province.message}</p>
+              )}
+              <Controller
+                name="district"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <RegionSelect
+                    label="Quận/Huyện"
+                    value={field.value}
+                    options={districts}
+                    onChange={(e) => {
+                      field.onChange(e);
+                      fetchWards(e.target.value);
+                    }}
+                  />
+                )}
               />
-              <InputField id="address" label="Địa chỉ" />
-              <div className="flex items-center space-x-2">
+              {errors.district && (
+                <p className="text-red-500">{errors.district.message}</p>
+              )}
+              <Controller
+                name="ward"
+                control={control}
+                defaultValue=""
+                render={({ field }) => (
+                  <RegionSelect
+                    label="Phường/Xã"
+                    value={field.value}
+                    options={wards}
+                    onChange={(e) => field.onChange(e.target.value)}
+                  />
+                )}
+              />
+              {errors.ward && (
+                <p className="text-red-500">{errors.ward.message}</p>
+              )}
+              <Controller
+                name="address"
+                control={control}
+                render={({ field }) => (
+                  <InputField {...field} id="address" label="Địa chỉ" />
+                )}
+              />
+              {errors.address && (
+                <p className="text-red-500">{errors.address.message}</p>
+              )}
+              <div className="flex items-center">
                 <label
                   htmlFor="note"
-                  className="w-1/3 font-semibold text-gray-700"
+                  className="w-1/3 text-gray-700 text-sm font-medium"
                 >
                   Ghi chú
                 </label>
                 <textarea
                   id="note"
-                  name="note"
+                  {...register("note")}
                   className="w-2/3 border-b border-gray-300 px-3 py-2 focus:outline-none focus:border-green-500"
                   rows="1"
                 ></textarea>
@@ -136,7 +367,7 @@ const AddUserPopup = ({ isOpen, onClose }) => {
             </div>
 
             {/* Form Actions */}
-            <div className="mt-6 flex justify-end space-x-4 col-span-2">
+            <div className="mt-16 flex justify-end space-x-4 col-span-2">
               <Button
                 type="submit"
                 icon={<AiOutlineSave />}
