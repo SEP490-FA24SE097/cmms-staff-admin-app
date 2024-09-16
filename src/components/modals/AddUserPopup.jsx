@@ -14,6 +14,7 @@ import Button from "../common/Button";
 import RegionSelect from "../common/RegionSelect";
 import useRegionData from "../../hooks/useRegionData";
 import SelectField from "../common/SelectField";
+import { formatRoleName } from "../../utils/formatRoleName";
 
 const schema = yup.object().shape({
   name: yup.string().required("Tên người dùng là bắt buộc"),
@@ -81,7 +82,6 @@ const AddUserPopup = ({ isOpen, onClose }) => {
       try {
         const response = await axios.get("/roles");
         setRoles(response.data.data);
-        console.log(response.data.data);
       } catch {
         console.log("Error fetching roles", errors);
       }

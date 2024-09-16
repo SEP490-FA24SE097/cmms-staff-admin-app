@@ -10,7 +10,7 @@ const RegionSelect = ({ label, options, value, onChange }) => (
         Chọn {label}
       </option>
       {options.map((option) => (
-        <option key={option.code} value={option.code}>
+        <option key={option.code} value={option.name}>
           {option.name}
         </option>
       ))}
