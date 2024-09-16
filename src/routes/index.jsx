@@ -2,6 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import { lazy, Suspense } from "react";
 import ErrorPage from "../pages/ErrorPage";
 import Dashboard from "../pages/Dashboard";
+import AuthGuard from "../guards/AuthGuard";
+import GuestGuard from "../guards/GuestGuard";
 
 // Lazy load components for better performance
 const ManLayout = lazy(() => import("../layouts/man"));
@@ -12,6 +14,7 @@ const Users = lazy(() => import("../pages/Users"));
 const router = createBrowserRouter([
   {
     path: "/",
+    errorElement: <ErrorPage />,
     element: (
       <Suspense
         fallback={
@@ -20,8 +23,9 @@ const router = createBrowserRouter([
           </div>
         }
       >
-        {/* Show a loading indicator while components load */}
-        <ManLayout />
+        <AuthGuard>
+          <ManLayout />
+        </AuthGuard>
       </Suspense>
     ),
     children: [
@@ -38,11 +42,15 @@ const router = createBrowserRouter([
         element: <Users />,
       },
     ],
-    errorElement: <ErrorPage />,
   },
   {
     path: "/login",
-    element: <Login />,
+    errorElement: <ErrorPage />,
+    element: (
+      <GuestGuard>
+        <Login />,
+      </GuestGuard>
+    ),
   },
 ]);
 
