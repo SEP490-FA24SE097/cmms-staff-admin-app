@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "../utils/axios";
+import axios from "axios";
 
 const useRegionData = () => {
   const [provinces, setProvinces] = useState([]);
@@ -20,7 +20,6 @@ const useRegionData = () => {
   // api get all districts of a province
 
   const fetchDistricts = async (provinceCode) => {
-    console.log("provinceCode", provinceCode);
     const response = await axios.get(
       `https://provinces.open-api.vn/api/p/${provinceCode}?depth=2`
     );

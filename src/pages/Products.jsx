@@ -1,4 +1,5 @@
 import React, { useState, useRef } from "react";
+import { createPortal } from "react-dom";
 import {
   AiOutlinePlus,
   AiOutlineUpload,
@@ -137,7 +138,11 @@ const PopverAddProduct = ({ isOpen, handleMouseEnter, handleMouseLeave }) => {
           </div>
         </div>
       )}
-      <AddProductPopup isOpen={isPopupOpen} onClose={handleClosePopup} />
+      {isPopupOpen &&
+        createPortal(
+          <AddProductPopup isOpen={isPopupOpen} onClose={handleClosePopup} />,
+          document.body
+        )}
     </>
   );
 };

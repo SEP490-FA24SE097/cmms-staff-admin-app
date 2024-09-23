@@ -2,8 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Ẩn thanh cuộn mặc định */
-html {
+Ẩn thanh cuộn mặc định html {
   overflow: hidden;
 }
 

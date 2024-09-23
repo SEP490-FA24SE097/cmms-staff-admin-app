@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import AddUserPopup from "../components/modals/AddUserPopup";
 import SearchBar from "../components/SearchBar";
+import { createPortal } from "react-dom";
 
 const Sidebar = () => {
   return (

@@ -35,7 +35,7 @@ const InputField = forwardRef(
                   tooltipId={tooltipId}
                   tooltipContent={tooltipContent}
                 />
-                <Tooltip id={tooltipId} variant="info" />
+                <Tooltip id={tooltipId} variant="info" className="max-w-64" />
               </>
             )}
           </div>

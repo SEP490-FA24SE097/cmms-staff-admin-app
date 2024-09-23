@@ -78,7 +78,7 @@ const AddUserPopup = ({ isOpen, onClose }) => {
   });
 
   useEffect(() => {
-    const fectchRoles = async () => {
+    const fetchRoles = async () => {
       try {
         const response = await axios.get("/roles");
         setRoles(response.data.data);
@@ -86,7 +86,7 @@ const AddUserPopup = ({ isOpen, onClose }) => {
         console.log("Error fetching roles", errors);
       }
     };
-    const fectchStore = async () => {
+    const fetchStores = async () => {
       try {
         const response = await axios.get("/stores");
         setStores(response.data.data);
@@ -95,8 +95,8 @@ const AddUserPopup = ({ isOpen, onClose }) => {
         console.log("Error fetching stores", errors);
       }
     };
-    fectchRoles();
-    fectchStore();
+    fetchRoles();
+    fetchStores();
   }, []);
 
   const onSubmit = async (data) => {
@@ -241,7 +241,7 @@ const AddUserPopup = ({ isOpen, onClose }) => {
                       country={"vn"} // Quốc kỳ mặc định là Việt Nam
                       value={field.value} // Kết nối value với field của React Hook Form
                       onChange={field.onChange} // Kết nối onChange với field
-                      inputClass="border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full"
+                      inputclassName="border-b-2 border-gray-300 focus:outline-none focus:border-blue-500 w-full"
                       inputStyle={{
                         width: "100%",
                         border: "none",
