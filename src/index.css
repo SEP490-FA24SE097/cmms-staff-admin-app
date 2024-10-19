@@ -2,26 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
-Ẩn thanh cuộn mặc định html {
-  overflow: hidden;
-}
-
-/* Tạo thanh cuộn giả */
+/* Tùy chỉnh thanh cuộn */
 body {
   position: relative;
   overflow: auto;
 }
 
-/* Tùy chỉnh thanh cuộn */
 body::-webkit-scrollbar {
-  width: 10px;
+  width: 10px !important;
 }
 
 body::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 10px;
+  background: #888 !important;
+  border-radius: 10px !important;
 }
 
 body::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #f1f1f1 !important;
 }
