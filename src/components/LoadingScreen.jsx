@@ -1,20 +1,18 @@
-import React from "react";
-import CircularProgress from "@mui/material/CircularProgress";
-import { Box } from "@mui/material";
+import Lottie from "lottie-react";
+import loadingAnimation from "../assets/Animation - 1729164200868.json";
+import ProgressBar from "./ProgressBar";
 
 export default function LoadingScreen() {
   return (
-    <Box
-      sx={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        height: "100vh",
-        width: "100vw",
-        backgroundColor: "#f4f6f8",
-      }}
-    >
-      <CircularProgress />
-    </Box>
+    <>
+      <ProgressBar />
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <Lottie
+          animationData={loadingAnimation}
+          className="mx-auto"
+          style={{ height: 120, width: 120 }}
+        />
+      </div>
+    </>
   );
 }
