@@ -3,6 +3,7 @@ import Lottie from "lottie-react";
 import AccountPopover from "./AccountPopover";
 import SettingPopover from "./SettingPopover";
 import logo from "../../../assets/logo.json";
+import SelectedStore from "./SelectedStore";
 
 const ManHeader = () => {
   return (
@@ -13,10 +14,13 @@ const ManHeader = () => {
           className="mx-auto"
           style={{ height: 30, width: 30 }}
         />
-        <div class="text-2xl font-sans text-primary">Cmms</div>
+        <div className="text-2xl font-sans text-primary">Cmms</div>
       </div>
 
       <div className="flex items-center">
+        <div className="w-44">
+          <SelectedStore />
+        </div>
         <SettingPopover />
         <AccountPopover />
       </div>
